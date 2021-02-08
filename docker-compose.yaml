@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: fullstack-next
+    depends_on:
+      - db
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 3000:3000
+      - 4000:4000
+    volumes:
+      - .:/home/node/app
+      - extensions:/home/node/.vscode-server/extensions
+      - extensions-insiders:/home/node/.vscode-server-insiders/extensions
+      - history:/commandhistory
+    environment:
+      - NODE_ENV=development
+      - EDITOR=code
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      - POSTGRES_DB=docker
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+  pgAdmin:
+    restart: always
+    image: dpage/pgadmin4
+    depends_on:
+      - db
+    ports:
+      - '8000:80'
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=1234@admin.com
+      - PGADMIN_DEFAULT_PASSWORD=1234
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+
+volumes:
+  extensions:
+  extensions-insiders:
+  history:
+  postgres-data:
+  pgadmin:

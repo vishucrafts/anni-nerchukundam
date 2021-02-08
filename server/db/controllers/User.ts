@@ -1,6 +1,6 @@
-import knex from '../db/KnexInstance'
+import knex from '../KnexInstance'
 
-async function getUser(user: User) {
+async function getUserByPassword(user: User) {
   const rows: Pick<User, 'id'>[] = await knex<User>('users')
     .select('id')
     .where({
@@ -15,4 +15,4 @@ async function getUser(user: User) {
   }
 }
 
-export {getUser}
+export {getUserByPassword}

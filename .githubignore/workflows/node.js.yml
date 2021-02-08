@@ -14,10 +14,14 @@ jobs:
       - name: Check running containers
         run: docker ps -a
       - name: Check logs
-        run: docker logs fullstack-next-prod
+        run: docker logs anni-nerchukundam-prod
       - name: run jest tests
-        run: docker exec -w /home/node/app fullstack-next-prod npm run test:coverage
+        run:
+          docker exec -w /home/node/app anni-nerchukundam-prod npm run
+          test:coverage
       - name: run cypress tests
-        run: docker exec -w /home/node/app fullstack-next-prod npm run test:e2e:ci
+        run:
+          docker exec -w /home/node/app anni-nerchukundam-prod npm run
+          test:e2e:ci
       - name: run codecov
-        run: docker exec -w /home/node/app fullstack-next-prod npx codecov
+        run: docker exec -w /home/node/app anni-nerchukundam-prod npx codecov

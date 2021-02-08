@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   app:
-    container_name: fullstack-next
+    container_name: anni-nerchukundam
     depends_on:
-      - db
+      - anni-nerchukundam-db
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -19,9 +19,9 @@ services:
     environment:
       - NODE_ENV=development
       - EDITOR=code
-  db:
+  anni-nerchukundam-db:
     image: postgres:latest
-    container_name: db
+    container_name: anni-nerchukundam-db
     environment:
       - POSTGRES_DB=docker
       - POSTGRES_USER=docker
@@ -34,7 +34,7 @@ services:
     restart: always
     image: dpage/pgadmin4
     depends_on:
-      - db
+      - anni-nerchukundam-db
     ports:
       - '8000:80'
     environment:

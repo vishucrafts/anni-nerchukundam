@@ -2,9 +2,9 @@ version: '3.9'
 
 services:
   app:
-    container_name: fullstack-next-prod
+    container_name: anni-nerchukundam-prod
     depends_on:
-      - db
+      - anni-nerchukundam-db
     build:
       context: .
       dockerfile: ./prod.Dockerfile
@@ -14,9 +14,9 @@ services:
     environment:
       - NODE_ENV=development
       - CODECOV_TOKEN=${CODECOV_TOKEN}
-  db:
+  anni-nerchukundam-db:
     image: postgres:latest
-    container_name: db
+    container_name: anni-nerchukundam-db
     environment:
       - POSTGRES_DB=docker
       - POSTGRES_USER=docker

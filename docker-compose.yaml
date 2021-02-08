@@ -19,6 +19,7 @@ services:
     environment:
       - NODE_ENV=development
       - EDITOR=code
+      - DEBUG=knex:query
   anni-nerchukundam-db:
     image: postgres:latest
     container_name: anni-nerchukundam-db

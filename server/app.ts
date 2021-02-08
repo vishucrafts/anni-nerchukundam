@@ -1,7 +1,9 @@
+import {ApolloServer, gql} from 'apollo-server-express'
 import express from 'express'
-import jwt from 'jsonwebtoken'
 
 import {getUserByPassword} from './db/controllers/User'
+import resolvers from './graphql/resolvers'
+import typeDefs from './graphql/typeDefs'
 import authenticateToken from './utils/authentication/authenticateToken'
 import {generateAccessToken} from './utils/authentication/generateAccessToken'
 
@@ -33,12 +35,19 @@ app.post('/login', async (req, res) => {
   }
 })
 
-app.use(authenticateToken)
+// app.use(authenticateToken)
 
 app.get('/', (req, res) => {
   res.send('Hello, world from server!')
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+})
+
+server.applyMiddleware({app})
+
+app.listen({port: 4000}, () => {
+  console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
 })

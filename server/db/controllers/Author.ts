@@ -14,4 +14,8 @@ async function getAuthors() {
   return knex<Author>('authors').select('*')
 }
 
-export {getAuthorByBookId, getAuthors}
+async function getAuthorByName(name: string) {
+  return knex<Author>('authors').first('*').where('name', '=', name)
+}
+
+export {getAuthorByBookId, getAuthorByName, getAuthors}

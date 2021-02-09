@@ -1,8 +1,7 @@
 import {IResolvers} from 'apollo-server-express'
 
 import {getAuthorByBookId, getAuthors} from '../db/controllers/Author'
-import {getBooks, getBooksByAuthorId} from '../db/controllers/Book'
-import knex from '../db/KnexInstance'
+import {addBook, getBooks, getBooksByAuthorId} from '../db/controllers/Book'
 
 const resolvers: IResolvers = {
   Query: {
@@ -21,6 +20,12 @@ const resolvers: IResolvers = {
   Author: {
     async books(author: Author) {
       return getBooksByAuthorId(author.id)
+    },
+  },
+
+  Mutation: {
+    async addBook(_, {book}: {book: BookInput}) {
+      return addBook(book)
     },
   },
 }

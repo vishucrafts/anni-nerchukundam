@@ -11,8 +11,10 @@ import {
   getBooks,
   getBooksByAuthorId,
 } from '../db/controllers/Book'
+import {dateScalar} from './scalars/Date'
 
 const resolvers: IResolvers = {
+  Date: dateScalar,
   Result: {
     __resolveType(obj: Result) {
       if ('title' in obj) {
@@ -44,6 +46,10 @@ const resolvers: IResolvers = {
       {borderColor}: {borderColor: AllowedColor},
     ): Promise<string> {
       return borderColor
+    },
+    async getDate(_, {timeStamp}: {timeStamp: number}): Promise<Date> {
+      const date = new Date(timeStamp)
+      return date
     },
   },
   Book: {

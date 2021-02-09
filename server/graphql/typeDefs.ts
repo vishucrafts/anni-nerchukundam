@@ -3,6 +3,8 @@ import {gql} from 'apollo-server-express'
 const typeDefs = gql`
   # Comments in graphql
 
+  scalar Date
+
   type Book {
     id: Int
     title: String
@@ -27,6 +29,7 @@ const typeDefs = gql`
     favoriteColor: AllowedColor
     avatar(borderColor: AllowedColor): String
     search(contains: String): [Result]
+    getDate(timeStamp: Date): Date
   }
 
   interface MutationResponse {

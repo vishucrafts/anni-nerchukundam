@@ -2,6 +2,7 @@ import {ApolloServer, gql} from 'apollo-server-express'
 import express from 'express'
 
 import {getUserByPassword} from './db/controllers/User'
+import {UpperCaseDirective} from './graphql/directives/UpperCaseDirective'
 import resolvers from './graphql/resolvers'
 import typeDefs from './graphql/typeDefs'
 import authenticateToken from './utils/authentication/authenticateToken'
@@ -44,6 +45,9 @@ app.get('/', (req, res) => {
 const server = new ApolloServer({
   typeDefs,
   resolvers,
+  schemaDirectives: {
+    upper: UpperCaseDirective,
+  },
 })
 
 server.applyMiddleware({app})

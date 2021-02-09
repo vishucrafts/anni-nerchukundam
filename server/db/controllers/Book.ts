@@ -26,4 +26,10 @@ async function addBook(bookInput: BookInput) {
   }
 }
 
-export {addBook, getBooks, getBooksByAuthorId}
+async function findBooksByTitle(searchTerm: string): Promise<Book[]> {
+  return await knex<Book>('books')
+    .select('*')
+    .where('title', 'like', `%${searchTerm}%`)
+}
+
+export {addBook, findBooksByTitle, getBooks, getBooksByAuthorId}

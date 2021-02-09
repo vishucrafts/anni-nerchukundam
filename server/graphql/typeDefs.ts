@@ -15,18 +15,46 @@ const typeDefs = gql`
     books: [Book]
   }
 
+  union Result = Book | Author
+
   type Query {
+    """
+    Returns all books
+    Supports **multi-line** description for your [API](http://example.com)!
+    """
     books: [Book]
     authors: [Author]
+    favoriteColor: AllowedColor
+    avatar(borderColor: AllowedColor): String
+    search(contains: String): [Result]
+  }
+
+  interface MutationResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+  }
+
+  type AddBookResponse implements MutationResponse {
+    code: Int!
+    success: Boolean!
+    message: String!
+    book: Book
   }
 
   type Mutation {
-    addBook(book: BookInput): Book
+    addBook(book: BookInput): AddBookResponse
   }
 
   input BookInput {
     title: String
     author: String
+  }
+
+  enum AllowedColor {
+    RED
+    GREEN
+    BLUE
   }
 `
 

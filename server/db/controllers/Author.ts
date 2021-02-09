@@ -18,4 +18,10 @@ async function getAuthorByName(name: string) {
   return knex<Author>('authors').first('*').where('name', '=', name)
 }
 
-export {getAuthorByBookId, getAuthorByName, getAuthors}
+async function findAuthorsByName(searchTerm: string): Promise<Author[]> {
+  return await knex<Author>('authors')
+    .select('*')
+    .where('name', 'like', `%${searchTerm}%`)
+}
+
+export {findAuthorsByName, getAuthorByBookId, getAuthorByName, getAuthors}

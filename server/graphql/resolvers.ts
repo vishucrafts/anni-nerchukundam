@@ -1,15 +1,49 @@
 import {IResolvers} from 'apollo-server-express'
 
-import {getAuthorByBookId, getAuthors} from '../db/controllers/Author'
-import {addBook, getBooks, getBooksByAuthorId} from '../db/controllers/Book'
+import {
+  findAuthorsByName,
+  getAuthorByBookId,
+  getAuthors,
+} from '../db/controllers/Author'
+import {
+  addBook,
+  findBooksByTitle,
+  getBooks,
+  getBooksByAuthorId,
+} from '../db/controllers/Book'
 
 const resolvers: IResolvers = {
+  Result: {
+    __resolveType(obj: Result) {
+      if ('title' in obj) {
+        return 'Book'
+      } else {
+        return 'Author'
+      }
+    },
+  },
   Query: {
-    async books() {
+    async search(_, {contains}: {contains: string}): Promise<Result[]> {
+      const books = await findBooksByTitle(contains)
+      const authors = await findAuthorsByName(contains)
+
+      const result: Result[] = []
+      return result.concat(books).concat(authors)
+    },
+    async books(): Promise<Book[]> {
       return getBooks()
     },
-    async authors() {
+    async authors(): Promise<Author[]> {
       return getAuthors()
+    },
+    async favoriteColor(): Promise<AllowedColor> {
+      return 'BLUE'
+    },
+    async avatar(
+      _,
+      {borderColor}: {borderColor: AllowedColor},
+    ): Promise<string> {
+      return borderColor
     },
   },
   Book: {
@@ -24,8 +58,13 @@ const resolvers: IResolvers = {
   },
 
   Mutation: {
-    async addBook(_, {book}: {book: BookInput}) {
-      return addBook(book)
+    async addBook(_, {book}: {book: BookInput}): Promise<AddBookResponse> {
+      return {
+        code: 201,
+        message: 'Book added successfully',
+        success: true,
+        book: await addBook(book),
+      }
     },
   },
 }
